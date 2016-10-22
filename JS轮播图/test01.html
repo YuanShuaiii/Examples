@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0;
+            float: left;
+        }
+        #con {
+            margin-top: 70px;
+            margin-left: -100px;
+            width: 800px;
+            height: 100px;
+            /*border: 2px solid pink;*/
+            position: absolute;
+            left: 0;
+        }
+        p:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            background-color: #0088bb;
+            display: block
+        }
+        p:nth-child(2) {
+            width: 100px;
+            height: 100px;
+            background-color: #0bb20c;
+            display: block
+        }
+        p:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            background-color: #ce3c39;
+            display: block
+        }
+        p:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            background-color: #dad55e;
+            display: block
+        }
+        p:nth-child(5) {
+            width: 100px;
+            height: 100px;
+            background-color: aqua;
+            display: block
+        }
+        p:nth-child(6) {
+            width: 100px;
+            height: 100px;
+            background-color: burlywood;
+            display: block
+        }
+        p:nth-child(7) {
+            width: 100px;
+            height: 100px;
+            background-color: #0088bb;
+            display: block
+        }
+        p:nth-child(8) {
+            width: 100px;
+            height: 100px;
+            background-color: #0bb20c;
+            display: block
+        }
+        span {
+            width: 100px;
+            height: 100px;
+            background-color: yellowgreen;
+            display: block;
+        }
+        #border {
+            margin: 150px;
+            height: 300px;
+            width: 100px;
+            border: 2px solid fuchsia;
+            background-color: transparent;
+            position: relative;
+            /*left: 152px;*/
+            /*top: 100px;*/
+            z-index: 500;
+            overflow: hidden;
+        }
+        li {
+            list-style: none;
+            height: 20px;
+            width: 20px;
+            border: 1px solid hotpink;
+        }
+        .on {
+            background-color: #00CC00;
+        }
+    </style>
+
+
+</head>
+<body>
+<div id="border">
+    <div class="choose">
+        <ul id="ul1" style="margin-left: 20px;position: absolute">
+            <!--<li>6</li>-->
+            <li index="1">1</li>
+            <li index="2">2</li>
+            <li index="3">3</li>
+            <li index="4">4</li>
+            <li index="5">5</li>
+            <li index="6">6</li>
+            <!--<li>1</li>-->
+        </ul>
+        <ul id=ul2 style="margin-top: 200px;position: absolute">
+            <li id="li1">前</li>
+            <li id="li2">后</li>
+        </ul>
+    </div>
+
+    <div id="con" style="left:0">
+        <p>6</p>
+        <p>1</p>
+        <p>2</p>
+        <p>3</p>
+        <p>4</p>
+        <p>5</p>
+        <p>6</p>
+        <p>1</p>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        var container = document.getElementById("border");
+        var list = document.getElementById("con");
+        var buttons = document.getElementById("ul1").getElementsByTagName("li");
+        var prev = document.getElementById("li1");
+        var next = document.getElementById("li2");
+        var index = 1;
+        var animated = false;
+        var timer;
+
+        function showbutton() {
+//            if (!animated) {
+                for (var i = 0; i < buttons.length; i++) {
+                    if (buttons[i].className == "on") {
+                        buttons[i].className = "";
+//                    break;
+                    }
+                }
+                buttons[index - 1].className = "on";
+            }
+//        }
+
+        function animate(offset) {
+            animated = true;
+            var newleft = parseInt(list.style.left) + offset;
+            var time = 300;
+            var interval = 10;
+            var speed = offset/(time/interval);
+
+            function go() {
+                $('#ul1 li').index
+                if((speed < 0 && parseInt(list.style.left) > newleft) || speed > 0 && parseInt(list.style.left) < newleft){
+                    list.style.left = parseInt(list.style.left) + speed + "px";
+                    setTimeout(go,interval);
+                }else {
+                    animated = false;
+                    list.style.left = newleft + "px";
+//            list.style.left = parseInt(list.style.left) + offset + "px";
+                    console.log(list.style.left);
+                    if(newleft > 0) {
+                        list.style.left = -500 + "px"
+                    }else if(newleft < -500) {
+                        list.style.left = 0 + "px"
+                    }
+                }
+            }
+            go();
+//            debugger
+        }
+
+        function play() {
+            timer = setInterval(function () {
+                next.onclick();
+            },3000)
+        }
+        function stop() {
+            console.log("sadssty");
+            clearInterval(timer)
+        }
+        next.onclick = function () {
+            if(index == 6) {
+                index = 1
+            }else {
+                index += 1;
+            }
+            showbutton();
+            if(!animated) {
+                animate(-100)
+            }
+        };
+        prev.onclick = function () {
+            if(index == 1) {
+                index = 6
+            }else {
+                index -= 1;
+            }
+            showbutton();
+            if(!animated){
+                animate(100)
+            }
+        };
+        for(var i = 0 ; i < buttons.length ; i++){
+          buttons[i].onclick = function () {
+              if (this.className == "on"){
+                  return;
+              }
+              var myIndex = parseInt(this.getAttribute("index"));
+              var offset = -100 * (myIndex - index);
+              index = myIndex;
+              animate(offset);
+              showbutton();
+          }
+        }
+        container.onclick = stop();
+//        container.onmouseout = play();
+        play()
+    };
+
+//    Number.prototype.add = function (num) {
+//        return(this+num);
+//    };
+//    alert((3).add(15));
+//    function a() {
+//        console.log("Sd")
+//    }
+//    a();
+//    console.log($('.border')[0].clientLeft);
+//    $(document).ready(function () {
+//        var left = $('.con')[0].offsetLeft;
+//        $('.ul2 li:nth-child(1)').click(function () {
+////            console.log(left);
+//            console.log($('p')[0].clientWidth);
+//            $('.con').css("marginLeft", ($('.con')[0].offsetLeft - $('p')[0].clientWidth) + "px" )
+//        });
+//        $('.ul2 li:nth-child(2)').click(function () {
+////            console.log(left);
+//            console.log($('p')[0].clientWidth);
+//            $('.con').css("marginLeft", ($('.con')[0].offsetLeft + $('p')[0].clientWidth) + "px" )
+//        });
+//        $('.ul1 li').click(function (index) {
+//            var index = $(this).index();
+////            console.log($(this).index());
+////            console.log(index);
+//            move = setInterval(function () {
+////                console.log($(this).index()*$('p')[0].clientWidth);
+//                $('.con').css("marginLeft", ($('p')[0].offsetLeft*index - $('.border')[0].offsetLeft)/100 + "px" );
+//                console.log($('p')[0].offsetLeft);
+//                console.log($('p')[0].clientWidth*-index+150);
+//                if($('.con')[0].offsetLeft == $('p')[0].clientWidth*-index+150){
+//                    clearInterval(move);
+//                }
+//            },100);
+//            $('.con').css("marginLeft", $('p')[0].clientWidth*-index+150 + "px" )
+//        });
+
+//        $('.n1').find($('p')).css("backgroundColor","red");
+//        $(this).css("backgroundColor","red")
+//        var newelm1 = $('<div></div>').css("border","5px solid red");
+//        var newelm2 = $('<div></div>').css("border","5px solid blue");
+//        $('.n2').wrap(newelm1);
+//        $('p').wrap(function (index) {
+//            if(index % 2){
+//                return newelm1
+//            }else{
+//                return newelm2
+//            }
+//        });
+//        $('div p').replaceAll($('span'));
+//        console.log(div p:nth-child(2))
+//        var index = 0;
+//        $('p').click(function () {
+//            index++;
+//            $(this).wrap(function () {
+//                if(index == 1){
+//                    return newelm1
+//                }
+//            });
+//        })
+//    })
+</script>
+</body>
+</html>
